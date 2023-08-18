@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomTable extends StatefulWidget {
-  List<String> tableHead;
-  List<String> tableBody;
+  List<TableCell> tableHead;
+  List<TableCell> tableBody;
 
   CustomTable({super.key, required this.tableHead, required this.tableBody});
 
@@ -13,82 +13,49 @@ class CustomTable extends StatefulWidget {
 }
 
 class _CustomTableState extends State<CustomTable> {
-  late List<String> tableHeadData;
-  late List<String> tableBodyData;
-
-  _CustomTableState() {
-    tableHeadData = widget.tableHead;
-    tableBodyData = widget.tableBody;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Table(
-          border: TableBorder.all(
-            color: Colors.white30,
-          ),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: [
-            const TableRow(
-                decoration: BoxDecoration(
-                  color: Colors.brown,
+    return Scaffold(
+      body: ListView(
+        children: [
+          Center(
+              child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Table(
+                border: TableBorder.all(
+                  color: Colors.white30,
                 ),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 children: [
-                  TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Title 01"),
-                    ),
-                  ),
-                  TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Title 02"),
-                    ),
-                  ),
-                  TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Title 03"),
+                  TableRow(
+                      decoration: const BoxDecoration(
+                        color: Colors.brown,
+                      ),
+                      children: [
+                        //get single data of tableHeadData list by using map function
+                        ...widget.tableHead.map((e) => e).toList(),
+                      ]),
+                  ...List.generate(
+                    widget.tableBody.length,
+                    (index) => TableRow(
+                      children: [
+                        ...tableBodyRowGenerator(index),
+                      ],
                     ),
                   )
-                ]),
-            ...List.generate(
-              widget.tableBody.length,
-              (index) => const TableRow(children: [
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text("Cell 01"),
-                  ),
-                ),
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text("Cell 02"),
-                  ),
-                ),
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text("Cell 03"),
-                  ),
-                )
-              ]),
-            )
-          ],
-        ),
+                ],
+              ),
+            ),
+          ))
+        ],
       ),
-    ));
+    );
+  }
+
+  List<TableCell> tableBodyRowGenerator(int index) {
+    return [
+      ...widget.tableBody.map((e) => e).toList(),
+    ];
   }
 }
